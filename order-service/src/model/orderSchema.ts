@@ -2,17 +2,9 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const OrderSchema = new Schema({
-  products: [
-    {
-      product_id: String,
-    },
-  ],
-  user: String,
+  products:String,
   total_price: Number,
-  payment: {
-    type: Boolean,
-    default: false,
-  },
+  payment: Boolean,
   created_at: {
     type: Date,
     default: Date.now(),

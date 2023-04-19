@@ -17,7 +17,7 @@ export const createProduct = async (
 
     await newProduct.save();
 
-    return res.sendStatus(200).json(newProduct);
+     res.status(200).json(newProduct)
   } catch (error) {
     console.error(error);
 

@@ -1,5 +1,5 @@
 import { Kafka, Message } from "kafkajs";
-
+import { emitter }  from '../eventEmitter';
 
 export class KafkaConsumer {
   consumer;
@@ -12,26 +12,22 @@ export class KafkaConsumer {
     this.consumer = kafka.consumer({ groupId: groupId });
   }
 
-  connectConsumer(topic: string) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.consumer.connect();
-        await this.consumer.subscribe({ topic });
-        await this.consumer.run({
-          eachMessage: async ({ message }: { message: Message }) => {
-            const data = message.value?.toString();
-            resolve(data);
-          },
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        await this.consumer.stop();
-      }
-    });
+  async connectConsumer(topic: string) {
+    try {
+      console.log("fahiz");
+      
+      await this.consumer.connect();
+      await this.consumer.subscribe({ topic });
+      await this.consumer.run({
+        eachMessage: async ({ message }: { message: Message }) => {
+          const data = JSON.parse(message.value?.toString());
+          console.log(data);
+          
+          emitter.emit(topic, data)
+
+        },
+      });
+    } catch (error) {}
   }
 
-  stopConsumer() {
-    this.consumer.disconnect();
-  }
 }

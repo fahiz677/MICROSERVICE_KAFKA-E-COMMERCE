@@ -16,6 +16,7 @@ export class KafkaProducer {
       try {
         await this.producer.connect();
 
+
         await this.producer.send({
           topic,
           messages: [{ value: message }],
